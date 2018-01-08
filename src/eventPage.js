@@ -1,5 +1,5 @@
 chrome.alarms.create('fetch_gas_price',{
-  "periodInMinutes": 5
+  "periodInMinutes": 3
 });
 
 chrome.alarms.onAlarm.addListener(alarm => {
