@@ -1,0 +1,45 @@
+body {
+	width: 250px;
+	height: 80px;
+	background-color: #1e8def;
+    color: white;
+}
+
+.popup {
+	display: flex;
+	
+}
+
+.info {
+	margin-top: 4px;
+	padding-left: 4px;
+	font-size: 0.8em;
+}
+
+.gasprice {
+	cursor: pointer;
+	flex: 1;
+	border-radius: 10px;
+	border: 2px solid #eee;
+	margin: 1%;
+	padding: 8px;
+}
+
+.gasprice-number {
+	font-size: 1.5rem;
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+}
+
+.gasprice-label {
+	font-size: 0.8rem;
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+}
+
+.selected {
+	background-color: #dc82ff;
+	color: #fff;
+}
