@@ -4,38 +4,45 @@ function selectOption(option) {
 		chrome.storage.sync.set({
 			'gasPriceOption': option
 		});
-		chrome.extension.getBackgroundPage().updateBadge();
-		updateDom();
-		addClickListeners();
+
+		chrome.runtime.getBackgroundPage(backgroundPage=>{
+			backgroundPage.updateBadge();
+			updateDom();
+			addClickListeners();
+		});	
 	};
 }
 
 function updateDom() {
-	const data = chrome.extension.getBackgroundPage().appData;
-	let html = 
-	`<div class="gasprice js-gasprice" data-option="safeLow">
-		<span class="gasprice-number" >${data.ethGasStationData.safeLow/10}</span>
-		<span class="gasprice-label">Safe Low</span>
-	</div>`+
-	`<div class="gasprice js-gasprice" data-option="average">
-		<span class="gasprice-number data-option="average">${data.ethGasStationData.average/10}</span>
-		<span class="gasprice-label">Standard</span>
-	</div>`+
-	`<div class="gasprice js-gasprice" data-option="fast">
-		<span class="gasprice-number">${data.ethGasStationData.fast/10}</span>
-		<span class="gasprice-label">Fast</span>
-	</div>`;
+	chrome.runtime.getBackgroundPage(backgroundPage=>{
+		const data = backgroundPage.appData;
+		let html = 
+		`<div class="gasprice js-gasprice" data-option="safeLow">
+			<span class="gasprice-number" >${data.ethGasStationData.safeLow/10}</span>
+			<span class="gasprice-label">Safe Low</span>
+		</div>`+
+		`<div class="gasprice js-gasprice" data-option="average">
+			<span class="gasprice-number data-option="average">${data.ethGasStationData.average/10}</span>
+			<span class="gasprice-label">Standard</span>
+		</div>`+
+		`<div class="gasprice js-gasprice" data-option="fast">
+			<span class="gasprice-number">${data.ethGasStationData.fast/10}</span>
+			<span class="gasprice-label">Fast</span>
+		</div>`;
 
-	// Update dom
-	document.getElementsByClassName('js-popup')[0].innerHTML = html;
+		// Update dom
+		document.getElementsByClassName('js-popup')[0].innerHTML = html;
+		addClickListeners();
 
-	// Show selected option
-	chrome.storage.sync.get({
-		'gasPriceOption': 'average'
-	}, (items)=>{
-		let element = document.querySelectorAll(`div[data-option='${items.gasPriceOption}']`)[0];
-		element.className += ' selected';
-	});	
+		// Show selected option
+		chrome.storage.sync.get({
+			'gasPriceOption': 'average'
+		}, (items)=>{
+			let element = document.querySelectorAll(`div[data-option='${items.gasPriceOption}']`)[0];
+			element.className += ' selected';
+		});	
+	});
+	
 }
 
 function addClickListeners() {
@@ -50,7 +57,6 @@ function addClickListeners() {
 
 function start() {
 	updateDom();
-	addClickListeners();
 }
 
 start();
