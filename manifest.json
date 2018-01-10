@@ -1,7 +1,7 @@
 {
   "name": "Ethereum Gas Price Extension",
-  "version": "1.0",
-  "description": "Shows the latest current standard gas price provided by EthGasStation",
+  "version": "1.1",
+  "description": "Displays the current gas price provided by EthGasStation",
   "manifest_version": 2,
   "background": {
     "page": "src/background.html",
