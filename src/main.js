@@ -1,3 +1,10 @@
+function escapeHtml(html){
+    var text = document.createTextNode(html);
+    var div = document.createElement('div');
+    div.appendChild(text);
+    return div.innerHTML;
+}
+
 function selectOption(option) {
 	// Curry function with option
 	return function(e){
@@ -14,19 +21,18 @@ function selectOption(option) {
 }
 
 function updateDom() {
-	chrome.runtime.getBackgroundPage(backgroundPage=>{
-		const data = backgroundPage.appData;
+	function renderDom(data) {
 		let html = 
 		`<div class="gasprice js-gasprice" data-option="safeLow">
-			<span class="gasprice-number" >${data.ethGasStationData.safeLow/10}</span>
+			<span class="gasprice-number" >${escapeHtml(data.ethGasStationData.safeLow/10)}</span>
 			<span class="gasprice-label">Safe Low</span>
 		</div>`+
 		`<div class="gasprice js-gasprice" data-option="average">
-			<span class="gasprice-number data-option="average">${data.ethGasStationData.average/10}</span>
+			<span class="gasprice-number data-option="average">${escapeHtml(data.ethGasStationData.average/10)}</span>
 			<span class="gasprice-label">Standard</span>
 		</div>`+
 		`<div class="gasprice js-gasprice" data-option="fast">
-			<span class="gasprice-number">${data.ethGasStationData.fast/10}</span>
+			<span class="gasprice-number">${escapeHtml(data.ethGasStationData.fast/10)}</span>
 			<span class="gasprice-label">Fast</span>
 		</div>`;
 
@@ -40,7 +46,19 @@ function updateDom() {
 		}, (items)=>{
 			let element = document.querySelectorAll(`div[data-option='${items.gasPriceOption}']`)[0];
 			element.className += ' selected';
-		});	
+		});
+	}
+
+	chrome.runtime.getBackgroundPage(backgroundPage => {
+		const data = backgroundPage.appData;
+		if(typeof data.ethGasStationData.safeLow !== 'undefined') {
+			renderDom(data);
+		}
+		else {
+			backgroundPage.fetchGasPrice().then(()=>{
+				updateDom(); // Let's try again after data has been fetched
+			});
+		}
 	});
 	
 }
