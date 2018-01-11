@@ -20,7 +20,7 @@ function updateBadge() {
 }
 
 function fetchGasPrice() {
-  fetch("https://ethgasstation.info/json/ethgasAPI.json")
+  return fetch("https://ethgasstation.info/json/ethgasAPI.json")
     .then((res) => {return res.json()})
     .then(data => {
       // Store the current data for the popup page

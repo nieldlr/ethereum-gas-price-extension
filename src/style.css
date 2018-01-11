@@ -7,7 +7,7 @@ body {
 
 .popup {
 	display: flex;
-	
+	height: 65px;
 }
 
 .info {
