@@ -64,19 +64,19 @@ function parseApiData(apiData, provider) {
     return {
       "slow": {
         "gwei": parseInt(apiData.safeLow, 10)/10,
-        "wait": apiData.safeLowWait + " minutes"
+        "wait": "~"+apiData.safeLowWait + " minutes"
       },
       "standard": {
         "gwei": parseInt(apiData.average, 10)/10,
-        "wait": apiData.avgWait + " minutes"
+        "wait": "~"+apiData.avgWait + " minutes"
       },
       "fast": {
         "gwei": parseInt(apiData.fast, 10)/10,
-        "wait": apiData.fastWait + " minutes"
+        "wait": "~"+apiData.fastWait + " minutes"
       },
       "rapid": {
         "gwei": parseInt(apiData.fastest, 10)/10,
-        "wait": apiData.fastestWait + " minutes"
+        "wait": "~"+apiData.fastestWait + " minutes"
       }
     }
   }
@@ -89,15 +89,15 @@ function parseApiData(apiData, provider) {
       },
       "standard": {
         "gwei": Math.floor(parseInt(apiData.data.standard, 10)/1000000000),
-        "wait": "3 minutes"
+        "wait": "~3 minutes"
       },
       "fast": {
         "gwei": Math.floor(parseInt(apiData.data.fast, 10)/1000000000),
-        "wait": "1 minute"
+        "wait": "~1 minute"
       },
       "rapid": {
         "gwei": Math.floor(parseInt(apiData.data.rapid, 10)/1000000000),
-        "wait": "15 seconds"
+        "wait": "~15 seconds"
       }
     }
   }
