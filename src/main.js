@@ -23,16 +23,16 @@ function selectOption(option) {
 function updateDom() {
 	function renderDom(data) {
 		let html = 
-		`<div class="gasprice js-gasprice" data-option="safeLow">
-			<span class="gasprice-number" >${escapeHtml(data.ethGasStationData.safeLow/10)}</span>
+		`<div class="gasprice js-gasprice" data-option="slow">
+			<span class="gasprice-number">${escapeHtml(data.gasData.slow.gwei)}</span>
 			<span class="gasprice-label">Safe Low</span>
 		</div>`+
-		`<div class="gasprice js-gasprice" data-option="average">
-			<span class="gasprice-number data-option="average">${escapeHtml(data.ethGasStationData.average/10)}</span>
+		`<div class="gasprice js-gasprice" data-option="standard">
+			<span class="gasprice-number">${escapeHtml(data.gasData.standard.gwei)}</span>
 			<span class="gasprice-label">Standard</span>
 		</div>`+
 		`<div class="gasprice js-gasprice" data-option="fast">
-			<span class="gasprice-number">${escapeHtml(data.ethGasStationData.fast/10)}</span>
+			<span class="gasprice-number">${escapeHtml(data.gasData.fast.gwei)}</span>
 			<span class="gasprice-label">Fast</span>
 		</div>`;
 
@@ -42,7 +42,7 @@ function updateDom() {
 
 		// Show selected option
 		chrome.storage.sync.get({
-			'gasPriceOption': 'average'
+			'gasPriceOption': 'standard'
 		}, (items)=>{
 			let element = document.querySelectorAll(`div[data-option='${items.gasPriceOption}']`)[0];
 			element.className += ' selected';
@@ -51,7 +51,7 @@ function updateDom() {
 
 	chrome.runtime.getBackgroundPage(backgroundPage => {
 		const data = backgroundPage.appData;
-		if(typeof data.ethGasStationData.safeLow !== 'undefined') {
+		if(typeof data.gasData.slow !== 'undefined') {
 			renderDom(data);
 		}
 		else {
