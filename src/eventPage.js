@@ -3,7 +3,7 @@ var appData = {
 };
 
 chrome.alarms.create('fetch_gas_price',{
-  "periodInMinutes": 3
+  "periodInMinutes": 2
 });
 
 chrome.alarms.onAlarm.addListener(alarm => {
