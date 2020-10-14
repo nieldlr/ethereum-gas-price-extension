@@ -24,6 +24,9 @@ function getProviderUrl(provider) {
     case 'ethgasstation':
       return "https://ethgasstation.info/api/ethgasAPI.json?api-key=d216b81e8ed8f5c8a82744be99b22b2d1757098f40df3c2ea5bb40b3912b";
       break;
+    case 'gasnow':
+      return "https://www.gasnow.org/api/v3/gas/price?utm_source=EthGasPriceExtension";
+      break;
   }
 }
 
@@ -37,7 +40,7 @@ function fetchGasPrice() {
       .then((res) => {return res.json()})
       .then(data => {
         // Store the current data for the popup page
-        appData.gasData = parseGasData(data);
+        appData.gasData = parseApiData(data, items.provider);
         // Update badge
         updateBadge();
       });
@@ -56,25 +59,49 @@ function fetchGasPrice() {
 }
 
 // Create a consistent structure for data so we can use multiple providers
-function parseGasData(gasData) {
-  return {
-    "slow": {
-      "gwei": parseInt(gasData.safeLow, 10)/10,
-      "wait": gasData.safeLowWait
-    },
-    "standard": {
-      "gwei": parseInt(gasData.average, 10)/10,
-      "wait": gasData.avgWait
-    },
-    "fast": {
-      "gwei": parseInt(gasData.fast, 10)/10,
-      "wait": gasData.fastWait
-    },
-    "rapid": {
-      "gwei": parseInt(gasData.fastest, 10)/10,
-      "wait": gasData.fastestWait
+function parseApiData(apiData, provider) {
+  if(provider === "ethgasstation") {
+    return {
+      "slow": {
+        "gwei": parseInt(apiData.safeLow, 10)/10,
+        "wait": apiData.safeLowWait
+      },
+      "standard": {
+        "gwei": parseInt(apiData.average, 10)/10,
+        "wait": apiData.avgWait
+      },
+      "fast": {
+        "gwei": parseInt(apiData.fast, 10)/10,
+        "wait": apiData.fastWait
+      },
+      "rapid": {
+        "gwei": parseInt(apiData.fastest, 10)/10,
+        "wait": apiData.fastestWait
+      }
     }
   }
+
+  if(provider === "gasnow") {
+    return {
+      "slow": {
+        "gwei": Math.floor(parseInt(apiData.data.slow, 10)/1000000000),
+        "wait": apiData.safeLowWait
+      },
+      "standard": {
+        "gwei": Math.floor(parseInt(apiData.data.standard, 10)/1000000000),
+        "wait": apiData.avgWait
+      },
+      "fast": {
+        "gwei": Math.floor(parseInt(apiData.data.fast, 10)/1000000000),
+        "wait": apiData.fastWait
+      },
+      "rapid": {
+        "gwei": Math.floor(parseInt(apiData.data.rapid, 10)/1000000000),
+        "wait": apiData.fastestWait
+      }
+    }
+  }
+  
 }
 
 fetchGasPrice(); // Initial fetch
