@@ -25,7 +25,7 @@ function updateDom() {
 		let html = 
 		`<div class="gasprice js-gasprice" data-option="slow">
 			<span class="gasprice-number">${escapeHtml(data.gasData.slow.gwei)}</span>
-			<span class="gasprice-label">Safe Low</span>
+			<span class="gasprice-label">Slow</span>
 		</div>`+
 		`<div class="gasprice js-gasprice" data-option="standard">
 			<span class="gasprice-number">${escapeHtml(data.gasData.standard.gwei)}</span>
