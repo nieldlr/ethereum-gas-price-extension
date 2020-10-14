@@ -85,15 +85,19 @@ function parseApiData(apiData, provider) {
     return {
       "slow": {
         "gwei": Math.floor(parseInt(apiData.data.slow, 10)/1000000000),
+        "wait": ">10 minutes"
       },
       "standard": {
         "gwei": Math.floor(parseInt(apiData.data.standard, 10)/1000000000),
+        "wait": "3 minutes"
       },
       "fast": {
         "gwei": Math.floor(parseInt(apiData.data.fast, 10)/1000000000),
+        "wait": "1 minute"
       },
       "rapid": {
         "gwei": Math.floor(parseInt(apiData.data.rapid, 10)/1000000000),
+        "wait": "15 seconds"
       }
     }
   }
