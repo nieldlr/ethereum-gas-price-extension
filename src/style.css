@@ -1,8 +1,9 @@
 body {
 	width: 325px;
-	height: 80px;
 	background-color: #1e8def;
     color: white;
+    box-sizing: border-box;
+    padding: 10px;
 }
 
 .popup {
@@ -11,8 +12,8 @@ body {
 }
 
 .info {
-	margin-top: 4px;
-	padding-left: 4px;
+	margin-top: 10px;
+	text-align: center;
 	font-size: 0.8em;
 }
 
