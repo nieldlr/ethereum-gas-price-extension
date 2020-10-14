@@ -16,6 +16,9 @@ body {
 	text-align: center;
 	font-size: 0.8em;
 }
+.info a {
+	color: #fff;
+}
 
 .gasprice {
 	cursor: pointer;
