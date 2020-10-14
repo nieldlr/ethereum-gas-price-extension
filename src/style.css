@@ -11,6 +11,17 @@ body {
 	height: 65px;
 }
 
+.settings {
+	position: absolute;
+	right: 2px;
+	top: 2px;
+	cursor: pointer;
+}
+
+.settings img {
+	width: 15px;
+}
+
 .info {
 	margin-top: 25px;
 	text-align: center;
