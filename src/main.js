@@ -34,6 +34,10 @@ function updateDom() {
 		`<div class="gasprice js-gasprice" data-option="fast">
 			<span class="gasprice-number">${escapeHtml(data.gasData.fast.gwei)}</span>
 			<span class="gasprice-label">Fast</span>
+		</div>`+
+		`<div class="gasprice js-gasprice" data-option="rapid">
+			<span class="gasprice-number">${escapeHtml(data.gasData.rapid.gwei)}</span>
+			<span class="gasprice-label">Rapid</span>
 		</div>`;
 
 		// Update dom
