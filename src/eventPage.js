@@ -19,16 +19,30 @@ function updateBadge() {
   });
 }
 
+function getProviderUrl(provider) {
+  switch(provider) {
+    case 'ethgasstation':
+      return "https://ethgasstation.info/api/ethgasAPI.json?api-key=d216b81e8ed8f5c8a82744be99b22b2d1757098f40df3c2ea5bb40b3912b";
+      break;
+  }
+}
+
 function fetchGasPrice() {
-  const url = "https://ethgasstation.info/api/ethgasAPI.json?api-key=d216b81e8ed8f5c8a82744be99b22b2d1757098f40df3c2ea5bb40b3912b";
-  return fetch(url)
-    .then((res) => {return res.json()})
-    .then(data => {
-      // Store the current data for the popup page
-      appData.gasData = parseGasData(data);
-      // Update badge
-      updateBadge();
-    });
+  chrome.storage.sync.get({
+    provider: "ethgasstation",
+  }, function(items) {
+    const url = getProviderUrl(items.provider);
+
+    return fetch(url)
+      .then((res) => {return res.json()})
+      .then(data => {
+        // Store the current data for the popup page
+        appData.gasData = parseGasData(data);
+        // Update badge
+        updateBadge();
+      });
+  });
+  
 
   // const url = "https://gasprice-proxy.herokuapp.com/"; // Firefox Proxy
   // return fetch(url)
