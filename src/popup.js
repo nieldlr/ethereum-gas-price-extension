@@ -83,6 +83,7 @@ function addClickListeners() {
 
 function start() {
 	updateDom();
+	
 	let settingsElement = document.getElementsByClassName('js-settings');
 	settingsElement[0].addEventListener('click', ()=>{
 		chrome.runtime.openOptionsPage();
