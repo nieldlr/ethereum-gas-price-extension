@@ -22,6 +22,7 @@ function updateBadge() {
 function getProviderUrl(provider) {
   switch(provider) {
     case 'ethgasstation':
+      // return "https://gasprice-proxy.herokuapp.com/"; // Firefox specific proxy
       return "https://ethgasstation.info/api/ethgasAPI.json?api-key=d216b81e8ed8f5c8a82744be99b22b2d1757098f40df3c2ea5bb40b3912b";
       break;
     case 'gasnow':
@@ -52,16 +53,6 @@ function fetchGasPrice() {
       });
     });
   });
-
-  // const url = "https://gasprice-proxy.herokuapp.com/"; // Firefox Proxy
-  // return fetch(url)
-  //   .then((res) => {return res.json()})
-  //   .then(data => {
-  //     // Store the current data for the popup page
-  //     appData.gasData = data;
-  //     // Update badge
-  //     updateBadge();
-  //   });
 }
 
 // Create a consistent structure for data so we can use multiple providers
