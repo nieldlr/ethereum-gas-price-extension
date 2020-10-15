@@ -31,21 +31,27 @@ function getProviderUrl(provider) {
 }
 
 function fetchGasPrice() {
-  chrome.storage.sync.get({
-    provider: "ethgasstation",
-  }, function(items) {
-    const url = getProviderUrl(items.provider);
+  return new Promise((resolve, reject)=>{
+    chrome.storage.sync.get({
+      provider: "ethgasstation",
+    }, function(items) {
+      const url = getProviderUrl(items.provider);
 
-    return fetch(url)
-      .then((res) => {return res.json()})
+      fetch(url).then((res) => {return res.json()})
       .then(data => {
         // Store the current data for the popup page
         appData.gasData = parseApiData(data, items.provider);
         // Update badge
         updateBadge();
+
+        // Resolve promise on success
+        resolve();
+      })
+      .catch((error) => {
+        reject();
       });
+    });
   });
-  
 
   // const url = "https://gasprice-proxy.herokuapp.com/"; // Firefox Proxy
   // return fetch(url)

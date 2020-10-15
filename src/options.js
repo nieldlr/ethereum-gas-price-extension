@@ -30,16 +30,7 @@ function selectProvider(option) {
 
     chrome.runtime.getBackgroundPage(backgroundPage=>{
       backgroundPage.fetchGasPrice();
-      // updateDom();
-      // addClickListeners();
     }); 
-
-
-    // chrome.runtime.getBackgroundPage(backgroundPage=>{
-    //   backgroundPage.updateBadge();
-    //   updateDom();
-    //   addClickListeners();
-    // }); 
   };
 }
 
