@@ -82,8 +82,17 @@ function addClickListeners() {
 }
 
 function start() {
+	// Show latest data if we have it
 	updateDom();
-	
+
+	// Fetch newest data upon opening
+	chrome.runtime.getBackgroundPage(backgroundPage => {
+		backgroundPage.fetchGasPrice().then(()=>{
+			updateDom(); // Let's try again after data has been fetched
+		});
+	});
+
+	// Add click listener to settings button
 	let settingsElement = document.getElementsByClassName('js-settings');
 	settingsElement[0].addEventListener('click', ()=>{
 		chrome.runtime.openOptionsPage();
