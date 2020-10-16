@@ -21,5 +21,14 @@
     "alarms",
     "storage"
   ],
-  "options_page": "src/options.html"
+  "applications": {
+    "gecko": {
+      "id": "ethgaspriceextension@nieldlr",
+      "strict_min_version": "53.0"
+    }
+  },
+  "options_ui": {
+    "page": "src/options.html",
+    "open_in_tab": true
+  }
 }

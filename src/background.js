@@ -22,8 +22,8 @@ function updateBadge() {
 function getProviderUrl(provider) {
   switch(provider) {
     case 'ethgasstation':
-      // return "https://gasprice-proxy.herokuapp.com/"; // Firefox specific proxy
-      return "https://ethgasstation.info/api/ethgasAPI.json?api-key=d216b81e8ed8f5c8a82744be99b22b2d1757098f40df3c2ea5bb40b3912b";
+      return "https://gasprice-proxy.herokuapp.com/"; // Firefox specific proxy
+      // return "https://ethgasstation.info/api/ethgasAPI.json?api-key=d216b81e8ed8f5c8a82744be99b22b2d1757098f40df3c2ea5bb40b3912b";
       break;
     case 'gasnow':
       return "https://www.gasnow.org/api/v3/gas/price?utm_source=EthGasPriceExtension";

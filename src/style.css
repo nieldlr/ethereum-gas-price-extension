@@ -4,6 +4,7 @@ body {
     color: white;
     box-sizing: border-box;
     padding: 10px;
+    font-family: "Helvetica";
 }
 
 .popup {
@@ -56,7 +57,7 @@ body {
 }
 
 .gasprice-wait {
-	font-size: 0.4rem;
+	font-size: 0.5rem;
 	font-weight: 200;
     display: inline-block;
     text-align: center;
