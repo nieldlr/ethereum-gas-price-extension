@@ -22,11 +22,14 @@ function updateBadge() {
 function getProviderUrl(provider) {
   switch(provider) {
     case 'ethgasstation':
-      return "https://gasprice-proxy.herokuapp.com/"; // Firefox specific proxy
-      // return "https://ethgasstation.info/api/ethgasAPI.json?api-key=d216b81e8ed8f5c8a82744be99b22b2d1757098f40df3c2ea5bb40b3912b";
+      // return "https://gasprice-proxy.herokuapp.com/"; // Firefox specific proxy
+      return "https://ethgasstation.info/api/ethgasAPI.json?api-key=d216b81e8ed8f5c8a82744be99b22b2d1757098f40df3c2ea5bb40b3912b";
       break;
     case 'gasnow':
       return "https://www.gasnow.org/api/v3/gas/price?utm_source=EthGasPriceExtension";
+      break;
+    case 'ethgaswatch':
+      return "https://gasprice-proxy.herokuapp.com/provider/ethgaswatch";
       break;
   }
 }
@@ -40,6 +43,7 @@ function fetchGasPrice() {
 
       fetch(url).then((res) => {return res.json()})
       .then(data => {
+        console.log("DATA", data);
         // Store the current data for the popup page
         appData.gasData = parseApiData(data, items.provider);
         // Update badge
@@ -95,6 +99,27 @@ function parseApiData(apiData, provider) {
       "rapid": {
         "gwei": Math.floor(parseInt(apiData.data.rapid, 10)/1000000000),
         "wait": "~15 seconds"
+      }
+    }
+  }
+
+  if(provider === "ethgaswatch") {
+    return {
+      "slow": {
+        "gwei": parseInt(apiData.slow.gwei, 10),
+        "wait": "<30 minutes"
+      },
+      "standard": {
+        "gwei": parseInt(apiData.normal.gwei, 10),
+        "wait": "<5 minutes"
+      },
+      "fast": {
+        "gwei": parseInt(apiData.fast.gwei, 10),
+        "wait": "<2 minutes"
+      },
+      "rapid": {
+        "gwei": parseInt(apiData.instant.gwei, 10),
+        "wait": "few seconds"
       }
     }
   }

@@ -12,7 +12,8 @@ chrome.storage.sync.get({
 function renderOptions(){
   let providersHtml = 
     `<li data-provider="ethgasstation" class="js-provider ${options.provider == 'ethgasstation' ? 'active':''}">Eth Gas Station ${options.provider == 'ethgasstation' ? '✓':''}</li>
-    <li data-provider="gasnow" class="js-provider ${options.provider == 'gasnow' ? 'active':''}">Gas Now ${options.provider == 'gasnow' ? '✓':''}</li>`;
+    <li data-provider="gasnow" class="js-provider ${options.provider == 'gasnow' ? 'active':''}">Gas Now ${options.provider == 'gasnow' ? '✓':''}</li>
+    <li data-provider="ethgaswatch" class="js-provider ${options.provider == 'ethgaswatch' ? 'active':''}">ETH Gas.watch ${options.provider == 'ethgaswatch' ? '✓':''}</li>`;
 
   document.getElementsByClassName('js-providers')[0].innerHTML = providersHtml;
   addClickListeners();
