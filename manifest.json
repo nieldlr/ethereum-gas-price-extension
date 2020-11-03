@@ -21,12 +21,6 @@
     "alarms",
     "storage"
   ],
-  // "applications": {
-  //   "gecko": {
-  //     "id": "{22635dc1-6dd0-4709-8c12-14c3003adb1f}",
-  //     "strict_min_version": "53.0"
-  //   }
-  // },
   "options_ui": {
     "page": "src/options.html",
     "open_in_tab": true
