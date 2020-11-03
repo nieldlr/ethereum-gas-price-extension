@@ -1,6 +1,6 @@
 {
   "name": "Ethereum Gas Price Extension",
-  "version": "1.8",
+  "version": "1.9",
   "description": "Displays the current gas price using your preferred gas price provider.",
   "manifest_version": 2,
   "background": {
@@ -21,5 +21,8 @@
     "alarms",
     "storage"
   ],
-  "options_page": "src/options.html"
+  "options_ui": {
+    "page": "src/options.html",
+    "open_in_tab": true
+  }
 }

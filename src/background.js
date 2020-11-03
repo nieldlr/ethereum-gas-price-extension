@@ -28,6 +28,9 @@ function getProviderUrl(provider) {
     case 'gasnow':
       return "https://www.gasnow.org/api/v3/gas/price?utm_source=EthGasPriceExtension";
       break;
+    case 'ethgaswatch':
+      return "https://gasprice-proxy.herokuapp.com/provider/ethgaswatch";
+      break;
   }
 }
 
@@ -95,6 +98,27 @@ function parseApiData(apiData, provider) {
       "rapid": {
         "gwei": Math.floor(parseInt(apiData.data.rapid, 10)/1000000000),
         "wait": "~15 seconds"
+      }
+    }
+  }
+
+  if(provider === "ethgaswatch") {
+    return {
+      "slow": {
+        "gwei": parseInt(apiData.slow.gwei, 10),
+        "wait": "<30 minutes"
+      },
+      "standard": {
+        "gwei": parseInt(apiData.normal.gwei, 10),
+        "wait": "<5 minutes"
+      },
+      "fast": {
+        "gwei": parseInt(apiData.fast.gwei, 10),
+        "wait": "<2 minutes"
+      },
+      "rapid": {
+        "gwei": parseInt(apiData.instant.gwei, 10),
+        "wait": "few seconds"
       }
     }
   }
