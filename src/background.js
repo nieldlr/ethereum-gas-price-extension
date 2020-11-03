@@ -43,7 +43,6 @@ function fetchGasPrice() {
 
       fetch(url).then((res) => {return res.json()})
       .then(data => {
-        console.log("DATA", data);
         // Store the current data for the popup page
         appData.gasData = parseApiData(data, items.provider);
         // Update badge
