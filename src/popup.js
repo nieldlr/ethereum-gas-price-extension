@@ -45,7 +45,7 @@ function updateDom() {
 		</div>`;
 
 		// Update dom
-		document.getElementsByClassName('js-popup')[0].innerHTML = html;
+		document.getElementsByClassName('js-popup')[0].innerHTML = DOMPurify.sanitize(html);
 		addClickListeners();
 
 		// Show selected option
