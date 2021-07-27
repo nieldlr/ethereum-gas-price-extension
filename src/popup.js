@@ -1,3 +1,4 @@
+const weiToGwei = 1000000000;
 function escapeHtml(html){
     var text = document.createTextNode(html);
     var div = document.createElement('div');
@@ -20,7 +21,7 @@ function selectOption(option) {
 	};
 }
 
-function updateDom() {
+async function updateDom() {
 	function renderDom(data) {
 		let html = 
 		`<div class="gasprice js-gasprice" data-option="slow">
@@ -57,18 +58,51 @@ function updateDom() {
 		});
 	}
 
-	chrome.runtime.getBackgroundPage(backgroundPage => {
+	function renderEIP1559(data) {
+		let currentData = data.eip1559;
+		let network = data.network;
+		const bFLength = currentData[network]['baseFeePerGas'].length;
+	    const currentBaseFee = currentData[network]['baseFeePerGas'][bFLength-1];
+	    const baseFeeFormatted = parseInt(Number(currentBaseFee), 10)/weiToGwei;
+
+		let html = 
+		`<div class="gasprice js-gasprice" data-option="basefee">
+			<span class="gasprice-label">Base Fee</span>
+			<span class="gasprice-number">${escapeHtml(baseFeeFormatted)}</span>
+		</div>`+
+		`<div class="gasprice js-gasprice" data-option="basefee-recommended">
+			<span class="gasprice-label">Recommended Base Fee</span>
+			<span class="gasprice-number">${escapeHtml(baseFeeFormatted*2)}</span>
+		</div>`;
+
+		// Update dom
+		document.getElementsByClassName('js-popup')[0].innerHTML = DOMPurify.sanitize(html);
+		addClickListeners();
+	}
+
+	chrome.runtime.getBackgroundPage(async (backgroundPage) => {
 		const data = backgroundPage.appData;
-		if(typeof data.gasData.slow !== 'undefined') {
-			renderDom(data);
+		if(await backgroundPage.shouldShowEIP1559()) {
+			if(typeof data.eip1559.mainnet !== 'undefined') {
+				renderEIP1559(data);
+			}
+			else {
+				backgroundPage.fetchGasPrice().then(()=>{
+					updateDom(); // Let's try again after data has been fetched
+				});
+			}
 		}
 		else {
-			backgroundPage.fetchGasPrice().then(()=>{
-				updateDom(); // Let's try again after data has been fetched
-			});
+			if(typeof data.gasData.slow !== 'undefined') {
+				renderDom(data);
+			}
+			else {
+				backgroundPage.fetchGasPrice().then(()=>{
+					updateDom(); // Let's try again after data has been fetched
+				});
+			}
 		}
 	});
-	
 }
 
 function addClickListeners() {

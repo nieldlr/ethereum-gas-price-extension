@@ -1,22 +1,59 @@
 var appData = {
-  gasData: {}
+  gasData: {},
+  eip1559: {},
+  network: 'mainnet'
 };
 
-chrome.alarms.create('fetch_gas_price',{
-  "periodInMinutes": 2
+const weiToGwei = 1000000000;
+
+const eip1559ActivationBlock = 12965000;
+let currentBlock = 0;
+
+async function shouldShowEIP1559() {
+  return new Promise(resolve => {
+    if(currentBlock >= eip1559ActivationBlock) {
+      resolve(true);
+    }
+    else {
+      // If not yet activated, let's see if feature flag is active
+      return chrome.storage.sync.get({
+        eip1559: false,
+      }, function(items) {
+        resolve(items.eip1559);
+      });
+    }
+  });
+}
+
+async function fetchFeeHistory(params) {
+  return fetch("https://gasprice-proxy.herokuapp.com/latest")
+  .then((r)=>{ return r.json(); }).then((d)=>{ return d});
+}
+
+chrome.alarms.create('fetch_gas_price', {
+  "periodInMinutes": 1
 });
 
 chrome.alarms.onAlarm.addListener(alarm => {
   fetchGasPrice();
 });
 
-function updateBadge() {
-  chrome.storage.sync.get({
-    gasPriceOption: "standard",
-  }, function(items) {
-    const gasPrice = appData.gasData[items.gasPriceOption].gwei;
-    chrome.browserAction.setBadgeText({text: String(gasPrice)});
-  });
+async function updateBadge() {
+  if(await shouldShowEIP1559()) {
+    let network = appData.network;
+    const bFLength = appData['eip1559'][network]['baseFeePerGas'].length;
+    const currentBaseFee = appData['eip1559'][network]['baseFeePerGas'][bFLength-1];
+    const baseFeeFormatted = parseInt(Number(currentBaseFee), 10)/weiToGwei;
+    chrome.browserAction.setBadgeText({text: String(baseFeeFormatted)});
+  }
+  else {
+    chrome.storage.sync.get({
+      gasPriceOption: "standard",
+    }, function(items) {
+      const gasPrice = appData.gasData[items.gasPriceOption].gwei;
+      chrome.browserAction.setBadgeText({text: String(gasPrice)});
+    });
+  }
 }
 
 function getProviderUrl(provider) {
@@ -34,27 +71,36 @@ function getProviderUrl(provider) {
   }
 }
 
-function fetchGasPrice() {
-  return new Promise((resolve, reject)=>{
-    chrome.storage.sync.get({
-      provider: "ethgasstation",
-    }, function(items) {
-      const url = getProviderUrl(items.provider);
+async function fetchGasPrice() {
+  return new Promise(async (resolve, reject)=>{
+    if(await shouldShowEIP1559()) {
+      appData['eip1559'] = await fetchFeeHistory();
 
-      fetch(url).then((res) => {return res.json()})
-      .then(data => {
-        // Store the current data for the popup page
-        appData.gasData = parseApiData(data, items.provider);
-        // Update badge
-        updateBadge();
+      updateBadge(); 
 
-        // Resolve promise on success
-        resolve();
-      })
-      .catch((error) => {
-        reject();
+      resolve();
+    }
+    else {
+      chrome.storage.sync.get({
+        provider: "ethgasstation",
+      }, function(items) {
+        const url = getProviderUrl(items.provider);
+
+        fetch(url).then((res) => {return res.json()})
+        .then(data => {
+          // Store the current data for the popup page
+          appData.gasData = parseApiData(data, items.provider);
+          // Update badge
+          updateBadge();
+
+          // Resolve promise on success
+          resolve();
+        })
+        .catch((error) => {
+          reject();
+        });
       });
-    });
+    }
   });
 }
 

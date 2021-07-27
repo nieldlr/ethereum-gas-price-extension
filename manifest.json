@@ -1,7 +1,7 @@
 {
   "name": "Ethereum Gas Price Extension",
-  "version": "1.10",
-  "description": "Displays the current gas price using your preferred gas price provider.",
+  "version": "2.0.0",
+  "description": "A simple free utility for your browser that helps you decide how much to spend on your next Ethereum transaction.",
   "manifest_version": 2,
   "background": {
     "page": "src/background.html",
